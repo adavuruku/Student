@@ -46,8 +46,9 @@ namespace Student
             services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
             
             services.AddScoped<ProductService, ProductImplementation>();
+            services.AddScoped<TestingService, TestServiceImplementation>();
             //db ends
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Student", Version = "v1"}); });
         }

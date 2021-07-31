@@ -1,0 +1,78 @@
+dotnet watch run --project student
+
+
+
+DBContext.Add(entity) or DBContext.dbset.add(entity)
+
+
+Language-Integrated Query (LINQ)
+
+
+Code-First Approach -> WRITE classes and mograte to DB (Class to DB)
+Database-First Approach -> Use Existing Database Tables to create classes (DB to Class)
+
+POCO -> Plain Old CLR Object
+
+In the Entity Framework, there are two persistence scenarios to save an entity data: connected and disconnected.
+
+Connected
+
+In the connected scenario, the same instance of DbContext is used in retrieving and saving entities, whereas this is different in the disconnected scenario
+
+Entity State
+Added
+Modified
+Deleted
+
+
+EF remain in its state until its executed on the db
+SaveChanges() execute the query on the database
+
+//saving disconnected
+//Disconnected entity
+var std = new Student(){ Name = "Bill" };
+
+using (var context = new SchoolContext())
+{
+    //1. Attach an entity to context with Added EntityState
+    context.Add<Student>(std);
+    
+    //or the followings are also valid
+    // context.Students.Add(std);
+    // context.Entry<Student>(std).State = EntityState.Added;
+    // context.Attach<Student>(std);
+                  
+    //2. Calling SaveChanges to insert a new record into Students table
+    context.SaveChanges();
+}
+
+#connected
+using (var context = new SchoolDBEntities())
+{
+    var std = new Student()
+    {
+        FirstName = "Bill",
+        LastName = "Gates"
+    };
+    context.Students.Add(std);
+
+    context.SaveChanges();
+}
+
+
+#EF 
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+
+dotnet tool install --global dotnet-ef
+
+dotnet add package Microsoft.EntityFrameworkCore.Design
+
+//generate migration for all the poco class
+dotnet ef migrations add <migration Name>
+dotnet ef migrations add InitialMigration
+
+//update the migration to database
+dotnet ef database update
+
+//remove the migration
+dotnet ef migraton remove
