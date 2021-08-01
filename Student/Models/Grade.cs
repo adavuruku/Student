@@ -1,6 +1,6 @@
 namespace Student.Models
 {
-    public record Grade
+    public record Grade:BaseEntity
     {
         public int GradeId { get; set; }
         public int CourseId { get; set; }

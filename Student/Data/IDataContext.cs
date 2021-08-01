@@ -5,7 +5,9 @@ using Student.Models;
 
 namespace Student.Data
 {
-    public interface IDataContext
+    //the esense of having this here is to expose(inject) the database context
+    //it will be serve as a service
+    public interface IDataContext 
     {
         DbSet<Product> Products { get; set; }
         DbSet<Standard> Standard { get; set; }
@@ -15,6 +17,7 @@ namespace Student.Data
         DbSet<Course> Course { get; set; }
         DbSet<Grade> Grade { get; set; }
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        //Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync();
     }
 }

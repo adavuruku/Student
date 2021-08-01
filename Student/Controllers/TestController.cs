@@ -9,12 +9,15 @@ using Newtonsoft.Json.Linq;
 using Student.Data;
 using Student.Dto;
 using Student.Models;
+using Student.MyJWT;
 using Student.Services;
 
 namespace Student.Controllers
 {
     [ApiController]
     [Route("test")]
+    
+    //[Route("[controller]/[action]")] -> will use the controller name [the name before controller] combine with action name for the routes i.e test/createstandard
     public class TestController:ControllerBase
     {
         private readonly TestingService _testingService;
@@ -27,6 +30,9 @@ namespace Student.Controllers
         }
 
         [HttpPost]
+       // [HttpPost("/tess/tt")]
+        //[Route("[controller]")] -> will use the controller name [the name before controller] name test/test
+       //[Route("[action]")] -> will use the action name -> test/test
         [Route("/new/standard")]
         public async Task<ActionResult<Standard>> CreateStandard(StandardDto standardDto)
         {
@@ -52,13 +58,14 @@ namespace Student.Controllers
         
         [HttpPost]
         [Route("/new/student")]
-        public async Task<ActionResult<Models.Student>> CreateStudent(StudentDto studentDto)
+        public async Task<ActionResult<Models.Student>> CreateStudent(Models.Student student)
+       // public async Task<ActionResult<Models.Student>> CreateStudent(StudentDto studentDto)
         {
-            Models.Student student = new()
+           /* Models.Student student = new()
             {
                 StudentName = studentDto.StudentName,
                 StandardId = studentDto.StandardId
-            };
+            };*/
 
             await _testingService.AddStudent(student);
             return Ok(student);
@@ -67,12 +74,35 @@ namespace Student.Controllers
         
         [HttpGet]
         [Route("/all/student")]
+        [Authorize]
         public async Task<ActionResult<Standard>> GetAllStudent()
         {
             var students = await _testingService.GetAllStudent();
             return Ok(students);
         }
         
+        [HttpPost("/student/login")]
+        public async Task<ActionResult<BodyHelper.LoginResponse>> StudentLogin(BodyHelper.StudentLogin student)
+        {
+            var loginResponse = await _testingService.StudentLogin(student);
+            if (loginResponse is null)
+            {
+                return NoContent();
+            }
+            return Ok(loginResponse);
+        }
+        /*
+         this will not give you access to the password since it has [JsonIgnore] in the model and
+         such I have to create a structure for it
+         public async Task<ActionResult<BodyHelper.LoginResponse>> StudentLogin(Models.Student student)
+        {
+            var loginResponse = await _testingService.StudentLogin(student);
+            if (loginResponse is null)
+            {
+                return NoContent();
+            }
+            return Ok(loginResponse);
+        }*/
         
         [HttpPost]
         [Route("/new/teacher")]
@@ -91,6 +121,7 @@ namespace Student.Controllers
         
         [HttpGet]
         [Route("/all/teacher")]
+        [Authorize]
         public async Task<ActionResult<Standard>> GetAllTeacher()
         {
             var allTeacher = await _testingService.GetAllTeacher();
@@ -204,7 +235,9 @@ namespace Student.Controllers
             }
             return Ok(existingTeacher);
         }
-        
+
+       
+
         /*public string MyJSONFormatter(Object J)
         {
             string json = JsonConvert.SerializeObject(J, Formatting.Indented, new JsonSerializerSettings
@@ -212,7 +245,15 @@ namespace Student.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
             return json;
-        }*/
+        }
+        
+       // 
+       [HttpGet][HttpPatch][HttpPost][HttpDelete]
+       public  ActionResult<String> NotFoundAction()
+       {
+            Console.WriteLine("Not Found Yeah");
+           return NotFound();
+       }*/
     }
     
     

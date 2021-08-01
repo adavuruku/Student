@@ -1,6 +1,6 @@
 namespace Student.Models
 {
-    public record StudentAddress
+    public record StudentAddress:BaseEntity
     {
         public int StudentAddressID { get; set; } //defines the Id
         public int StudentID { get; set; } //define the foreign key from Student 

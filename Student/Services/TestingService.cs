@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Student.Dto;
 using Student.Models;
 
 namespace Student.Services
@@ -14,6 +15,10 @@ namespace Student.Services
         
         Task AddStudent(Models.Student student);
         Task AddStandard(Standard standard);
+        Task<BodyHelper.LoginResponse> StudentLogin(BodyHelper.StudentLogin student);
+        
+        Task<Models.Student> LoadAStudent(int id);
+       
         Task AddStudentAddress(StudentAddress studentAddress);
         
         Task AddGrade(Grade grade);
@@ -24,5 +29,7 @@ namespace Student.Services
         
         Task AddTeacher(Teacher teacher);
         Task<IEnumerable<Teacher>> GetAllTeacher();
+        
+        
     }
 }

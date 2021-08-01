@@ -13,5 +13,19 @@ namespace Student.Dto
             public int teacherId { get; set; }
             public int courseId { get; set; }
         }
+        
+        public class StudentLogin
+        {
+            public string studentPassword { get; set; }
+            public string studentRegNo { get; set; }
+        }
+        
+        public class LoginResponse
+        {
+            public string studentName { get; set; }
+            public string studentRegNo { get; set; }
+            public int studentId { get; set; }
+            public string token { get; set; }
+        }
     }
 }

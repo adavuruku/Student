@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Student.Models;
 
@@ -8,6 +11,11 @@ namespace Student.Data
         public DataContext(DbContextOptions<DataContext> option) : base(option)
         {
             
+        }
+        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,6 +33,37 @@ namespace Student.Data
         public DbSet<Teacher> Teacher { get; set; }
         public DbSet<Course> Course { get; set; }
         public DbSet<Grade> Grade { get; set; }
+        
+        public override int SaveChanges()
+        {
+            AddTimestamps();
+            return base.SaveChanges();
+        }
+
+        //override the saveChanges to add the createdAt and UpdatedAt
+        public async Task<int> SaveChangesAsync()
+        {
+            
+            AddTimestamps();
+            return await base.SaveChangesAsync();
+        }
+
+        private void AddTimestamps()
+        {
+            var entities = ChangeTracker.Entries()
+                .Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+            foreach (var entity in entities)
+            {
+                var now = DateTime.UtcNow; // current datetime
+
+                if (entity.State == EntityState.Added)
+                {
+                    ((BaseEntity)entity.Entity).CreatedAt = now;
+                }
+                ((BaseEntity)entity.Entity).UpdatedAt = now;
+            }
+        }
 
     }
 }

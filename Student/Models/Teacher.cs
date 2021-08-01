@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Student.Models
 {
-    public record Teacher
+    public record Teacher:BaseEntity
     {
         public Teacher()
         {

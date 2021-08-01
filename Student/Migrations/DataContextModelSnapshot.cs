@@ -44,11 +44,17 @@ namespace Student.Migrations
                     b.Property<string>("CourseName")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
                     b.Property<int?>("TeacherId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("CourseId");
 
@@ -67,6 +73,9 @@ namespace Student.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("GradeName")
                         .HasColumnType("text");
 
@@ -78,6 +87,9 @@ namespace Student.Migrations
 
                     b.Property<int>("StudentId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("GradeId");
 
@@ -91,6 +103,9 @@ namespace Student.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp without time zone");
 
@@ -99,6 +114,9 @@ namespace Student.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("ProductId");
 
@@ -112,11 +130,17 @@ namespace Student.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<string>("StandardName")
                         .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("StandardId");
 
@@ -130,6 +154,9 @@ namespace Student.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<byte[]>("RowVersion")
                         .HasColumnType("bytea");
 
@@ -138,6 +165,15 @@ namespace Student.Migrations
 
                     b.Property<string>("StudentName")
                         .HasColumnType("text");
+
+                    b.Property<string>("StudentPassword")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StudentRegNo")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("StudentID");
 
@@ -160,11 +196,17 @@ namespace Student.Migrations
                     b.Property<string>("City")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("State")
                         .HasColumnType("text");
 
                     b.Property<int>("StudentID")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("StudentAddressID");
 
@@ -181,6 +223,9 @@ namespace Student.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<int?>("StandardId")
                         .HasColumnType("integer");
 
@@ -189,6 +234,9 @@ namespace Student.Migrations
 
                     b.Property<int?>("TeacherType")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("TeacherId");
 

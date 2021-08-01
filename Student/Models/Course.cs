@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Student.Models
 {
-    public record  Course
+    public record  Course:BaseEntity
     {
         public Course()
         {

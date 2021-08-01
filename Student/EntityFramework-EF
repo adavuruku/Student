@@ -76,3 +76,24 @@ dotnet ef database update
 
 //remove the migration
 dotnet ef migraton remove
+
+
+#Routing Constrains
+Type
+define the data type of parameters
+[Route("ket/{id:<parameter type>}")] -> [Route("ket/{id:int}")] //alpha (only alphabets) int, decimal, string
+
+[Route("ket/{id:< >}")] -> [Route("ket/{id:min(1)}")] //minimum value expected
+
+minlength/maxlength (length value) (for string and alphe)
+regex 
+
+https://github.com/dotnet/aspnetcore/tree/main/src/Http/Routing/src/Constraints
+
+#Adding JWT
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 5.0.8
+
+
+comment -> ctrl + shift + / = multi or ctrl + alt + / = single
+
+ctrl + D to duplicate line

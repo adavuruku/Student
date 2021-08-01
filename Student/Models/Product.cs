@@ -2,7 +2,7 @@ using System;
 
 namespace Student.Models
 {
-    public record Product
+    public record Product:BaseEntity
     {
         public int ProductId { get; set; }
         public string Name { get; set; }

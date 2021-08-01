@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using Student.Data;
+using Student.MyJWT;
 using Student.Repositories;
 using Student.Services;
 
@@ -42,15 +44,24 @@ namespace Student
                 Password = dbPassword
             };
             services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.ConnectionString));
-            
+           // AddTrasient() -> service created for every instace -> object scope
+           //Addscope -> create a single instance for a request -> request scope
+           //AddSingleton -> application scope 
             services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
             
             services.AddScoped<ProductService, ProductImplementation>();
             services.AddScoped<TestingService, TestServiceImplementation>();
             //db ends
+            
+            // configure strongly typed settings object
+            //we inject the part(section) of our appsetting.json we want here
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Student", Version = "v1"}); });
+            
+            
         }
 
         //This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,13 +74,46 @@ namespace Student
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Student v1"));
             }
 
+           /*
+            Middle ware inasp.net core
+            app.Use(async (context, next) =>
+            
+            {
+                await context.Response.WriteAsync("Hello First Middleware");
+                await next();
+                await context.Response.WriteAsync("Hello First Again Middleware");
+            });
+            
+            app.Use(async (context, next) =>
+            {
+                await context.Response.WriteAsync("Hello Second Middleware");
+            });
+            
+            */
+
             app.UseHttpsRedirection();
+ 
+             //YOU NEED UseRouting and UseEndpoint to enable use routing 
+             app.UseRouting();
+ 
+             app.UseMiddleware<JwtMiddleware>();
+             
+             app.UseAuthorization();
+             
+             app.UseEndpoints(endpoints =>endpoints.MapControllers());
+ 
+            /* app.UseEndpoints(endpoints =>
+             {
+                 //endpoints.MapControllers();
+                 endpoints.Map("/test",
+                     async context => { await context.Response.WriteAsync("Middleware In Routing"); });
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+                 //create defaault routee to handle 404
+                 endpoints.MapControllerRoute(
+                     "default",
+                     "{controller=Test}/{action=NotFoundAction}");
+             });*/
+         
         }
     }
 }
