@@ -63,7 +63,7 @@ namespace Student.Repositories
         public async Task<Models.Student> LoadAStudent(int id)
         {
             var itemRecord = await _context.Student.FindAsync(id);
-            Console.WriteLine(itemRecord.StudentName);
+           // Console.WriteLine(itemRecord.StudentName);
             return itemRecord;
         }
 

@@ -1,0 +1,143 @@
+//repository with generic interface
+//this hold on the common operation to all the classes
+
+public interface IRepository<TEntity> where TEntity:class{
+    TEntity Get(int Id);
+    IEnumerable<TEntity> GetAll();
+    IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+    Void Add(TEntity entity);
+    void AddRange(IEnumerable<TEntity> entities);
+
+    void Remove(TEntity entity);
+    void RemoveRange(IEnumerable<TEntity> entities);
+} 
+
+
+public class Repository<Entity> :IRepository<TEntity> where TEntity: class
+{
+    protected readonly DbContext Context;
+
+    public Repository(DbContext context){
+        Context = context;
+    }
+
+    public TEntity Get(int id){
+        return Context.Set<TEntity>().Find(id)
+    }
+
+    public IEnumerable<TEntity> GetAll(){
+        return Context.Set<TEntity>().ToList(id)
+    }
+
+    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate){
+        return Context.Set<TEntity>().Where(predicate);
+    }
+
+    public void Add(TEntity entity){
+        Context.Set<TEntity>().Add(entity)
+    }
+
+    public void AddRange(IEnumerable<TEntity> entities){
+        Context.Set<TEntity>().AddRange(entities)
+    }
+
+    public void Remove(TEntity entity){
+        Context.Set<TEntity>().Remove(entity)
+    }
+
+    public void RemoveRange(IEnumerable<TEntity> entities){
+        Context.Set<TEntity>().RemoveRange(entities)
+    }
+}
+
+******************Course Specific
+//interface for unique operation of  Course 
+public interface ICourseRepository:IRepository<Course>
+{
+    IEnumerable<Course> GetTopSellingCourses(int count)
+    IEnumerable<Course> GetCoursesWithAuthor(int pageIndex, int pageSize)
+}
+
+//the implementation inherit the unique interface Repository<Course>, and common ICourseRepository
+
+public class CourseRepository:Repository<Course>, ICourseRepository{
+    public CourseRepository(PlutonContext context):base(context){
+
+    }
+
+    public IEnumerable<Course> GetTopSellingCourses(int count){
+        return PlutonContext.Course.OrderByDescending(c=> c.FullPrie).Take.(count).ToList();
+    }
+
+    public IEnumerable<Course> GetCoursesWithAuthor(int pageIndex, int pageSize){
+        return PlutonContext.Course.
+        .Include(c=> c.Author)
+        .OrderBy(c=> c.Name)
+        .Skip(pageIndex - 1)
+        .Take.(pageSize).ToList();
+    }
+
+    public PlutonContext PlutonContext{
+        get {retun Context as PlutonContext}
+    }
+}
+
+******************Author Specific
+//interface for unique operation of  Author 
+public interface IAuthorRepository:IRepository<Author>
+{
+    IEnumerable<Course> GetTopAuthors(int pageIndex, int pageSize)
+}
+
+//the implementation inherit the unique interface Repository<Author>, and common ICourseRepository
+
+public class AuthorRepository:Repository<Author>, IAuthorRepository{
+    public AuthorRepository(PlutonContext context):base(context){
+
+    }
+
+
+
+    public IEnumerable<Course> GetTopAuthors(int pageIndex, int pageSize){
+        return PlutonContext.Author.
+        .Include(c=> c.Author)
+        .OrderBy(c=> c.Name)
+        .Skip(pageIndex - 1)
+        .Take.(pageSize).ToList();
+    }
+
+    public PlutonContext PlutonContext{
+        get {retun Context as PlutonContext}
+    }
+}
+
+
+//unit of work the unit
+
+public interface IUnitOfWork :IDisposable
+{
+    ICourseRepository Course {get;}
+    IAuthorRepository Author {get;}
+    int Complete();
+}
+
+public class UnitOfWork : IUnitOfWork
+{
+    private readonly PlutonContext _context;
+
+    public ICourseRepository Courses {get; private set;}
+    public IAuthorRepository Authors {get; private set;}
+    public UnitOfWork(PlutonContext context){
+        _context = context;
+        Course = CourseRepository(_context);
+        Authors = AuthorRepository(_context);
+    }
+
+    public int Complete(){
+        return _context.SaveChanges();
+    }
+
+    public void Dispose(){
+        _context.Dispose();
+    }
+}

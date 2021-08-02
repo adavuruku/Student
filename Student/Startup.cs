@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,13 +56,23 @@ namespace Student
             
             // configure strongly typed settings object
             //we inject the part(section) of our appsetting.json we want here
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Student", Version = "v1"}); });
             
             
+        }
+
+        public IRouter BuildRouter(IApplicationBuilder applicationBuilder)
+        {
+            var builder = new RouteBuilder(applicationBuilder);
+            builder.MapMiddlewareGet("/api/v1/user", appBuilder => {
+                // your Middleware1
+                //appBuilder.Use(MyMiddleware);
+            });
+            return builder.Build();
         }
 
         //This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +108,8 @@ namespace Student
              app.UseRouting();
  
              app.UseMiddleware<JwtMiddleware>();
+             
+             //app.UseMiddleware<MyMiddleware>();
              
              app.UseAuthorization();
              

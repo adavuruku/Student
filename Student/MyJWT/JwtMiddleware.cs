@@ -20,20 +20,20 @@ namespace Student.MyJWT
         private IConfiguration _configuration;
 
         private TestingService _testingService;
-        public JwtMiddleware(RequestDelegate next, IConfiguration configuration, TestingService testingService)
+        public JwtMiddleware(RequestDelegate next, IConfiguration configuration)
         {
             _next = next;
             _configuration = configuration;
-            _testingService = testingService;
+            
         }
 
 
         //1. checks if token actually Exist in the Authorization header
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, TestingService testingService)
         {
+            _testingService = testingService;
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            Console.WriteLine(token);
             //2. if theres token then validate and attach it to the context
             if (token != null)
                 await attachUserToContext(context, token);
@@ -62,8 +62,6 @@ namespace Student.MyJWT
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
-
-                Console.WriteLine("E reach here" + userId);
                 //4. attach user to context on successful jwt validation
                 context.Items["Student"] = await _testingService.LoadAStudent(userId);
             }

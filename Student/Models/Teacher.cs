@@ -18,9 +18,8 @@ namespace Student.Models
         public Nullable<int> TeacherType { get; set; }
     
         public Nullable<int> StandardId { get; set; }
-        
-        
         public virtual Standard Standard { get; set; }
+        
         public virtual ICollection<Course> Courses { get; set; }
     }
 }

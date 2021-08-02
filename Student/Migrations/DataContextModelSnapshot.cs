@@ -34,6 +34,21 @@ namespace Student.Migrations
                     b.ToTable("CourseStudent");
                 });
 
+            modelBuilder.Entity("RoleStudent", b =>
+                {
+                    b.Property<int>("RolesroleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentsStudentID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("RolesroleId", "StudentsStudentID");
+
+                    b.HasIndex("StudentsStudentID");
+
+                    b.ToTable("RoleStudent");
+                });
+
             modelBuilder.Entity("Student.Models.Course", b =>
                 {
                     b.Property<int>("CourseId")
@@ -121,6 +136,27 @@ namespace Student.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Student.Models.Role", b =>
+                {
+                    b.Property<int>("roleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("roleTitle")
+                        .HasColumnType("text");
+
+                    b.HasKey("roleId");
+
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("Student.Models.Standard", b =>
@@ -250,6 +286,21 @@ namespace Student.Migrations
                     b.HasOne("Student.Models.Course", null)
                         .WithMany()
                         .HasForeignKey("CoursesCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Student.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsStudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoleStudent", b =>
+                {
+                    b.HasOne("Student.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesroleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

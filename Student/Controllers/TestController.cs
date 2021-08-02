@@ -16,7 +16,6 @@ namespace Student.Controllers
 {
     [ApiController]
     [Route("test")]
-    
     //[Route("[controller]/[action]")] -> will use the controller name [the name before controller] combine with action name for the routes i.e test/createstandard
     public class TestController:ControllerBase
     {
@@ -74,11 +73,12 @@ namespace Student.Controllers
         
         [HttpGet]
         [Route("/all/student")]
-        [Authorize]
+        
         public async Task<ActionResult<Standard>> GetAllStudent()
         {
             var students = await _testingService.GetAllStudent();
             return Ok(students);
+            //return Json(students);
         }
         
         [HttpPost("/student/login")]
@@ -120,8 +120,9 @@ namespace Student.Controllers
         }
         
         [HttpGet]
+        [Authorize("Sherif",new string[] {"adams", "john", "paul"})]
         [Route("/all/teacher")]
-        [Authorize]
+        //[Authorize("Ahmad")]
         public async Task<ActionResult<Standard>> GetAllTeacher()
         {
             var allTeacher = await _testingService.GetAllTeacher();
