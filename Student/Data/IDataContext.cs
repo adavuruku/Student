@@ -19,5 +19,7 @@ namespace Student.Data
 
         //Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync();
+        
+        Task DisposeAsync();
     }
 }

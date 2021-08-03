@@ -6,7 +6,7 @@ using Student.Models;
 
 namespace Student.Data
 {
-    public class DataContext:DbContext, IDataContext
+    public class DataContext:DbContext //, IDataContext
     {
         public DataContext(DbContextOptions<DataContext> option) : base(option)
         {
@@ -46,6 +46,16 @@ namespace Student.Data
             
             AddTimestamps();
             return await base.SaveChangesAsync();
+        }
+        
+        public async Task DisposeDBContextAsync()
+        {
+            await base.DisposeAsync();
+        }
+        
+        public void DisposeDBContext()
+        {
+            base.Dispose();
         }
 
         private void AddTimestamps()

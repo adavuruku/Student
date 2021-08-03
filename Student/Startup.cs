@@ -19,6 +19,7 @@ using Student.Data;
 using Student.MyJWT;
 using Student.Repositories;
 using Student.Services;
+using Student.UnitOfWork.Service;
 
 namespace Student
 {
@@ -48,10 +49,11 @@ namespace Student
            // AddTrasient() -> service created for every instace -> object scope
            //Addscope -> create a single instance for a request -> request scope
            //AddSingleton -> application scope 
-            services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
-            
+           // services.AddScoped<IDataContext>(provider => provider.GetService<DataContext>());
+            //services.AddScoped<IDataContext, DataContext>();
             services.AddScoped<ProductService, ProductImplementation>();
             services.AddScoped<TestingService, TestServiceImplementation>();
+            services.AddScoped<IUnitOfWork, UnitOfWork.Repositories.UnitOfWork>();
             //db ends
             
             // configure strongly typed settings object

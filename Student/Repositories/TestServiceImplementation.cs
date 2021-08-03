@@ -18,12 +18,13 @@ namespace Student.Repositories
 {
     public class TestServiceImplementation: TestingService
     {
-        private readonly IDataContext _context;
+        private readonly DataContext _context;
+        // private readonly IDataContext _context;
         
         //I'm inject Configuration service here so I can use my secret keys in appsetting.json to create webtoken
         private IConfiguration _configuration;
         
-        public TestServiceImplementation(IDataContext context, IConfiguration configuration)
+        public TestServiceImplementation(DataContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
@@ -43,7 +44,7 @@ namespace Student.Repositories
         
         public async Task<BodyHelper.LoginResponse> StudentLogin(BodyHelper.StudentLogin student)
         {
-            Console.WriteLine(student.studentRegNo + " , " +student.studentPassword);
+           // Console.WriteLine(student.studentRegNo + " , " +student.studentPassword);
             var studentLogin = await _context.Student
                 .Where(s=> s.StudentPassword == student.studentPassword && s.StudentRegNo == student.studentRegNo)
                 .Select(t=> new

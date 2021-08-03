@@ -14,5 +14,7 @@ namespace Student.Models
         public string Location { get; set; }
     
         public virtual ICollection<Student> Students { get; set; }
+        
+        public virtual ICollection<Teacher> Teachers { get; set; }
     }
 }

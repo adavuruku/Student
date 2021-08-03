@@ -12,9 +12,10 @@ namespace Student.Repositories
     {
         
 
-        private readonly IDataContext _context;
+        //private readonly IDataContext _context;
+        private readonly DataContext _context;
         
-        public ProductImplementation(IDataContext context)
+        public ProductImplementation(DataContext context)
         {
             _context = context;
         }

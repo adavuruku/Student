@@ -20,9 +20,9 @@ namespace Student.Controllers
     public class TestController:ControllerBase
     {
         private readonly TestingService _testingService;
-        private readonly IDataContext _context;
+        private readonly DataContext _context;
         
-        public TestController(TestingService testingService, IDataContext context)
+        public TestController(TestingService testingService, DataContext context)
         {
             _testingService = testingService;
             _context = context;
