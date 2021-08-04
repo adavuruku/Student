@@ -18,7 +18,7 @@ namespace Student.Controllers
         public UnitOfWorkController(DataContext dataContext)
         {
             _dataContext = dataContext;
-            _iuUnitOfWork =  new UnitOfWork.Repositories.UnitOfWork(dataContext);
+            _iuUnitOfWork =  new UnitOfWork.Repositories.UnitOfWork(_dataContext);
         }
         
         
@@ -31,17 +31,16 @@ namespace Student.Controllers
                 CourseName = course.CourseName,
                 Location = course.Location
             };
-
-            Console.WriteLine("Course Created - > "+ cour.Location + " and "+ cour.CourseName);
             _iuUnitOfWork.Course.Add(cour);
             
             Teacher teach = new()
             {
-                TeacherName = "Muhibat Ohunene"
+                TeacherName = "Anayo Koro Ohunene"
             };
             _iuUnitOfWork.Teacher.Add(teach);
             
             await _iuUnitOfWork.Complete();
+            
             // register the instance so that it is disposed when request ends
             HttpContext.Response.RegisterForDispose(_iuUnitOfWork);
             
@@ -53,7 +52,7 @@ namespace Student.Controllers
         [Route("all/course")]
         public async Task<ActionResult<Standard>> GetAllCourse()
         {
-            var allCourse =  _iuUnitOfWork.Course.GetAll();
+            var allCourse  =  _iuUnitOfWork.Course.GetAll();
             return Ok(allCourse);
         }
 

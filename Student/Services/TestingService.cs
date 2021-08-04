@@ -30,6 +30,6 @@ namespace Student.Services
         Task AddTeacher(Teacher teacher);
         Task<IEnumerable<Teacher>> GetAllTeacher();
         
-        
+        Task AddRole(Role role);
     }
 }

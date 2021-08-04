@@ -16,6 +16,7 @@ namespace Student.Data
         DbSet<Teacher> Teacher { get; set; }
         DbSet<Course> Course { get; set; }
         DbSet<Grade> Grade { get; set; }
+        DbSet<Role> Role { get; set; }
 
         //Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync();

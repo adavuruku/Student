@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -237,8 +238,34 @@ namespace Student.Controllers
             return Ok(existingTeacher);
         }
 
-       
+        [HttpPost]
+        [Route("/new/role")]
+        public async Task<ActionResult<Role>> CreateRade(Role role)
+        {
+            Role roley = new()
+            {
+                roleTitle = role.roleTitle
+            };
+            await _testingService.AddRole(roley);
+            return Ok(roley);
+            //return CreatedAtAction(nameof(GetAllStudent), student);
+        }
 
+        [HttpPatch]
+        [Route("/student/add/role")]
+        public async Task<ActionResult<Standard>> AddRoleToStudent([FromBody] BodyHelper.AddRoleToStudent recordToUpdate)
+        {
+            var existingRole = await _context.Role.FindAsync(recordToUpdate.roleId);
+            var existingStudent = await _context.Student.FindAsync(recordToUpdate.studentId);
+            if (existingRole is null || existingStudent is null)
+            {
+                return NotFound();
+            }
+            
+            existingStudent.Roles.Add(existingRole);
+            await _context.SaveChangesAsync();
+            return Ok(existingStudent);
+        }
         /*public string MyJSONFormatter(Object J)
         {
             string json = JsonConvert.SerializeObject(J, Formatting.Indented, new JsonSerializerSettings
@@ -255,6 +282,7 @@ namespace Student.Controllers
             Console.WriteLine("Not Found Yeah");
            return NotFound();
        }*/
+        
     }
     
     

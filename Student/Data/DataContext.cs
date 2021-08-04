@@ -33,6 +33,7 @@ namespace Student.Data
         public DbSet<Teacher> Teacher { get; set; }
         public DbSet<Course> Course { get; set; }
         public DbSet<Grade> Grade { get; set; }
+        public DbSet<Role> Role { get; set; }
         
         public override int SaveChanges()
         {

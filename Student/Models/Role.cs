@@ -4,6 +4,10 @@ namespace Student.Models
 {
     public record Role:BaseEntity
     {
+        public Role()
+        {
+            this.Students = new HashSet<Student>();
+        }
         public int roleId { get; set; }
         public string roleTitle { get; set; }
         

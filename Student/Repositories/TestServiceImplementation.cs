@@ -130,7 +130,14 @@ namespace Student.Repositories
              }
             return allTeachers;
         }
-        
+
+        public async Task AddRole(Role role)
+        {
+            _context.Role.Add(role);
+            await _context.SaveChangesAsync();
+            //return Ok(roley);
+        }
+
         //JWT 
         
         

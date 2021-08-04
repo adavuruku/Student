@@ -27,5 +27,11 @@ namespace Student.Dto
             public int studentId { get; set; }
             public string token { get; set; }
         }
+        
+        public class AddRoleToStudent
+        {
+            public int studentId { get; set; }
+            public int roleId { get; set; }
+        }
     }
 }

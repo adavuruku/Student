@@ -11,6 +11,7 @@ namespace Student.Models
         public Student()
         {
             this.Courses = new HashSet<Course>();
+            this.Roles = new HashSet<Role>();
         }
     
         public int StudentID { get; set; }

@@ -34,6 +34,21 @@ namespace Student.Migrations
                     b.ToTable("CourseStudent");
                 });
 
+            modelBuilder.Entity("CourseTeacher", b =>
+                {
+                    b.Property<int>("CoursesCourseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TeachersTeacherId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CoursesCourseId", "TeachersTeacherId");
+
+                    b.HasIndex("TeachersTeacherId");
+
+                    b.ToTable("CourseTeacher");
+                });
+
             modelBuilder.Entity("RoleStudent", b =>
                 {
                     b.Property<int>("RolesroleId")
@@ -65,15 +80,10 @@ namespace Student.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
-                    b.Property<int?>("TeacherId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("CourseId");
-
-                    b.HasIndex("TeacherId");
 
                     b.ToTable("Course");
                 });
@@ -296,6 +306,21 @@ namespace Student.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CourseTeacher", b =>
+                {
+                    b.HasOne("Student.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Student.Models.Teacher", null)
+                        .WithMany()
+                        .HasForeignKey("TeachersTeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RoleStudent", b =>
                 {
                     b.HasOne("Student.Models.Role", null)
@@ -309,13 +334,6 @@ namespace Student.Migrations
                         .HasForeignKey("StudentsStudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Student.Models.Course", b =>
-                {
-                    b.HasOne("Student.Models.Teacher", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("Student.Models.StudentAddress", b =>
@@ -346,11 +364,6 @@ namespace Student.Migrations
             modelBuilder.Entity("Student.Models.Student", b =>
                 {
                     b.Navigation("StudentAddress");
-                });
-
-            modelBuilder.Entity("Student.Models.Teacher", b =>
-                {
-                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }
